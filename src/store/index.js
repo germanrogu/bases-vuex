@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-import getRandomInt from "@/helpers/getRandomInt";
+import counterStore from "./counter";
 
 /**
  * * Se hace el export default para que sea accesible desde el index.js
@@ -11,36 +11,8 @@ import getRandomInt from "@/helpers/getRandomInt";
  */
 export default createStore({
 
-    state: {
-        count: 1,
-        lastMutation: 'none',
-        isLoading: false,
-    },
-    mutations: {
-        increment(state) {
-            state.count++;
-        },
-        incrementBy(state, value) {
-            state.count += value;
-            state.lastMutation = 'incrementBy' + value;
-        },
-        setLoading(state, value) {
-            state.isLoading = value;
-        }
-    },
-    actions: {
-        async incrementRandomInt({ commit }) {
-            commit('setLoading', true);
-            const randomInt = await getRandomInt();
-            commit('incrementBy', randomInt);
-            commit('setLoading', false);
-        }
-    },
-    getters: {
-        squareCount(state) {
-            return state.count * state.count;
-        }
-
+    modules: {
+        counter: counterStore
     }
 
 })
