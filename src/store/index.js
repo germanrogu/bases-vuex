@@ -7,6 +7,7 @@ import getRandomInt from "@/helpers/getRandomInt";
  * * state - 
  * * mutations - metodos que modifican el state sincrono
  * * actions - metodos que pueden ser asincronos
+ * * getters - metodos que devuelven el state con alguna transformacion como las computed
  */
 export default createStore({
 
@@ -22,13 +23,24 @@ export default createStore({
         incrementBy(state, value) {
             state.count += value;
             state.lastMutation = 'incrementBy' + value;
+        },
+        setLoading(state, value) {
+            state.isLoading = value;
         }
     },
     actions: {
-        async incrementRandomInt(context) {
+        async incrementRandomInt({ commit }) {
+            commit('setLoading', true);
             const randomInt = await getRandomInt();
-            context.commit('incrementBy', randomInt);
+            commit('incrementBy', randomInt);
+            commit('setLoading', false);
         }
+    },
+    getters: {
+        squareCount(state) {
+            return state.count * state.count;
+        }
+
     }
 
 })
